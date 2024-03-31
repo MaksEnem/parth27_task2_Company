@@ -1,12 +1,14 @@
 #include <iostream>
-#include <cassert>
+#include <vector>
 
 class Employees
 {
     int commands = 0;
     int workers = 0;
-    std::string name;
-    std::string** employees = nullptr;
+    std::string name = "a";
+    std::vector<std::vector<std::string>> employees;
+
+
 public:
     Employees()
     {
@@ -14,40 +16,54 @@ public:
         std::cin >> commands;
         ++commands;
 
-        employees = new std::string*[commands];
-//
+       
+
+        std::cout << "commands: " << commands << std::endl;
+
         for (int i = 0; i < commands; ++i)
-        {
+        {          
+            std::vector<std::string> rowEmployees;
+
             if (i == 0)
             {
                 workers = 1;
             }
-            else
+            else 
             {
                 std::cout << "Enter the number of employees in " << i << " department: ";
                 std::cin >> workers;
-               
-            }   
-            employees[i] = new std::string[workers];
-        }
-
-        for (int i = 0; i < commands; ++i)
-        {
+            }
             for (int j = 0; j < workers; ++j)
             {
-              
-               employees[i][j] = 'a' + i + j;
+                std::cout << "Enter name: ";
+                //std::cin >> name;
+                name = 'a' + i + j;
+                rowEmployees.push_back(name);
             }
+            employees.push_back(rowEmployees);
+            
         }
+
+        std::cout << std::endl;
+        std::cout << "vec/size: " << employees.size() << std::endl;
+        std::cout << "vec/size1: " << employees[1].size();
+        std::cout << std::endl;
+       
+      
 
         for (int i = 0; i < commands; ++i)
         {
-            for (int j = 0; j < workers; ++j)
+            for (int j = 0; j < employees[i].size(); ++j)
             {
 
                std::cout <<  employees[i][j] << std::endl;
             }
         }
+
+
+
+
+
 
     }
     
@@ -55,9 +71,8 @@ public:
 
 int main()
 {
-    Employees* asd = new Employees();
-
-
+   Employees* asd = new Employees();
+   
 
     return 0;
 }
