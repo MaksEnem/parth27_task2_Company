@@ -1,5 +1,11 @@
 #include <iostream>
 #include <vector>
+#include <ctime>
+
+enum Tusks
+{
+    A, B, C
+};
 
 class Employees
 {
@@ -8,17 +14,12 @@ class Employees
     std::string name = "a";
     std::vector<std::vector<std::string>> employees;
 
-
 public:
     Employees()
     {
         std::cout << "Enter the number of commands: ";
         std::cin >> commands;
-        ++commands;
-
-       
-
-        std::cout << "commands: " << commands << std::endl;
+        ++commands;       
 
         for (int i = 0; i < commands; ++i)
         {          
@@ -35,44 +36,70 @@ public:
             }
             for (int j = 0; j < workers; ++j)
             {
-                std::cout << "Enter name: ";
+                //std::cout << "Enter name: ";
                 //std::cin >> name;
                 name = 'a' + i + j;
                 rowEmployees.push_back(name);
             }
-            employees.push_back(rowEmployees);
-            
-        }
+            employees.push_back(rowEmployees);            
+        }       
+    }
 
-        std::cout << std::endl;
-        std::cout << "vec/size: " << employees.size() << std::endl;
-        std::cout << "vec/size1: " << employees[1].size();
-        std::cout << std::endl;
-       
-      
-
+    void printNames()
+    {
         for (int i = 0; i < commands; ++i)
         {
             for (int j = 0; j < employees[i].size(); ++j)
             {
-
-               std::cout <<  employees[i][j] << std::endl;
+                std::cout << employees[i][j] << std::endl;
             }
         }
-
-
-
-
-
-
-    }
-    
+    }    
 };
+
+class Managers : public Employees
+{
+private:
+    int chapterIndication = 0;
+    int managementIndication = 0;
+
+public:
+    void setInstructionsFromTheHeadCompany()
+    {
+        std::cout << "Enter instructions: ";
+        std::cin >> chapterIndication;
+        srand(chapterIndication);
+        chapterIndication = rand();        
+    }
+
+    int get()
+    {
+        return chapterIndication;
+    }
+
+};
+
+
+
 
 int main()
 {
-   Employees* asd = new Employees();
-   
+    Managers* asd = new Managers();
+    //asd->printNames();
+    asd->setInstructionsFromTheHeadCompany();
+
+
+   /* int a = rand();
+
+    std::cout << a << std::endl;
+
+    
+
+    srand(time(NULL));
+
+    a = rand() % 10 + 5;
+
+    std::cout << a << std::endl;*/
 
     return 0;
 }
