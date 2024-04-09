@@ -1,105 +1,111 @@
 #include <iostream>
 #include <vector>
-#include <ctime>
 
-enum Tusks
+class Worker
 {
-    A, B, C
-};
-
-class Employees
-{
-    int commands = 0;
-    int workers = 0;
-    std::string name = "a";
-    std::vector<std::vector<std::string>> employees;
-
 public:
-    Employees()
-    {
-        std::cout << "Enter the number of commands: ";
-        std::cin >> commands;
-        ++commands;       
+	//int employs = 0;
+	std::string name = "unknow";
+	bool isBusy = false;
 
-        for (int i = 0; i < commands; ++i)
-        {          
-            std::vector<std::string> rowEmployees;
 
-            if (i == 0)
-            {
-                workers = 1;
-            }
-            else 
-            {
-                std::cout << "Enter the number of employees in " << i << " department: ";
-                std::cin >> workers;
-            }
-            for (int j = 0; j < workers; ++j)
-            {
-                //std::cout << "Enter name: ";
-                //std::cin >> name;
-                name = 'a' + i + j;
-                rowEmployees.push_back(name);
-            }
-            employees.push_back(rowEmployees);            
-        }       
-    }
+	void setName()
+	{
+		std::cout << "Enter name: ";
+		std::cin >> name;
+		//name = '1';
+	}
 
-    void printNames()
-    {
-        for (int i = 0; i < commands; ++i)
-        {
-            for (int j = 0; j < employees[i].size(); ++j)
-            {
-                std::cout << employees[i][j] << std::endl;
-            }
-        }
-    }    
+	void setIsBusy()
+	{
+		isBusy = false;
+	}
+
+	std::string getName()
+	{
+		return name;
+	}
+
 };
 
-class Managers : public Employees
+class Manager : public Worker
 {
 private:
-    int chapterIndication = 0;
-    int managementIndication = 0;
-
+	//std::vector<Worker> deportment;
+	Worker* deportment = nullptr;
+	//Worker* personal = nullptr;
+	int employs = 0;
 public:
-    void setInstructionsFromTheHeadCompany()
-    {
-        std::cout << "Enter instructions: ";
-        std::cin >> chapterIndication;
-        srand(chapterIndication);
-        chapterIndication = rand();        
-    }
 
-    int get()
-    {
-        return chapterIndication;
-    }
+	Manager()
+	{
+		std::cout << "Enter the number of employees in the team: ";
+		std::cin >> employs;
+		deportment = new Worker[employs];
+
+		for (int i = 0; i < employs; ++i)
+		{
+			deportment[i].setName();
+			deportment[i].setIsBusy();
+		}
+	}
+
+
+
+	int getEmploys()
+	{
+		return employs;
+	}
+
+	Worker getIndex(int index)
+	{
+		return deportment[index];
+	}
 
 };
-
-
-
 
 int main()
 {
-    Managers* asd = new Managers();
-    //asd->printNames();
-    asd->setInstructionsFromTheHeadCompany();
+	int numberCommands;
+	//std::cout << "Enter number of command: ";
+	//std::cin >> command;
+
+	numberCommands = 1;
+	++numberCommands;
 
 
-   /* int a = rand();
+	Manager* personal = new Manager[numberCommands];
 
-    std::cout << a << std::endl;
 
-    
+	for (int i = 0; i < numberCommands; ++i)
+	{
+		for (int j = 0; j < personal[i].getEmploys(); ++j)
+		{
+			std::cout << personal[i].getIndex(j).getName() << std::endl;
+		}
+	}
 
-    srand(time(NULL));
 
-    a = rand() % 10 + 5;
 
-    std::cout << a << std::endl;*/
+	std::cout << std::endl;
 
-    return 0;
+
+
+
+	delete[] personal;
+	/*std::vector<int> vec;
+	for (int i = 0; i < command; ++i)
+	{
+		vec.push_back(1);
+	}*/
+
+
+	/*std::vector<Manager> deportment(command);
+
+	for (int i = 0; i < command; ++i)
+	{
+		std::cout << deportment[i].getName() << std::endl;
+	}*/
+
+
 }
