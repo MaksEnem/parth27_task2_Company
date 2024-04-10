@@ -3,87 +3,122 @@
 
 class Worker
 {
-public:
-	//int employs = 0;
+public:	
 	std::string name = "unknow";
 	bool isBusy = false;
+	int employs = 0;
 
-
-	void setName()
+	void setEmploys(int& inEmploys)
 	{
-		std::cout << "Enter name: ";
-		std::cin >> name;
-		//name = '1';
-	}
-
-	void setIsBusy()
-	{
-		isBusy = false;
-	}
+		employs = inEmploys;
+	}	
 
 	std::string getName()
 	{
 		return name;
 	}
 
-};
-
-class Manager : public Worker
-{
-private:
-	//std::vector<Worker> deportment;
-	Worker* deportment = nullptr;
-	//Worker* personal = nullptr;
-	int employs = 0;
-public:
-
-	Manager()
-	{
-		std::cout << "Enter the number of employees in the team: ";
-		std::cin >> employs;
-		deportment = new Worker[employs];
-
-		for (int i = 0; i < employs; ++i)
-		{
-			deportment[i].setName();
-			deportment[i].setIsBusy();
-		}
-	}
-
-
-
 	int getEmploys()
 	{
 		return employs;
 	}
+};
 
-	Worker getIndex(int index)
-	{
-		return deportment[index];
+class Manager : public Worker
+{
+private:	
+	Worker** deportments = nullptr;	
+	
+public:
+
+	Manager(int& inNumberCommands)
+	{						
+		deportments = new Worker*[inNumberCommands];
+
+		for (int i = 0; i < inNumberCommands; ++i)
+		{
+			if (i == 0)
+			{
+				employs = 1;				
+			}
+			else
+			{
+				std::cout << "Enter the number of employees in the department " << i << " : ";
+				std::cin >> employs;
+			}
+			deportments[i] = new Worker[employs];
+			deportments[i]->setEmploys(employs);									
+		}
+
+		for (int i = 0; i < inNumberCommands; ++i)
+		{			
+			for (int j = 0; j < deportments[i]->getEmploys(); ++j)
+			{
+				if (i == 0)
+				{
+					std::cout << "Enter the name of the head of the company: ";
+					//std::cin >> deportments[i][j].name;
+					deportments[i][j].name = "Manager of Company";
+					
+				}
+				else if (i > 0 && j == 0)
+				{
+					std::cout << "Enter the name of the department manager: ";
+					//std::cin >> deportments[i][j].name;
+					deportments[i][j].name = "Manager of department";
+				}
+				else
+				{
+					std::cout << "Enter employee name: ";
+					//std::cin >> deportments[i][j].name;
+					deportments[i][j].name = 'a' + j;
+					deportments[i][j].isBusy;					
+				}				
+			}
+		}
+
+		for (int i = 0; i < inNumberCommands; ++i)
+		{			
+			for (int j = 0; j < deportments[i]->getEmploys(); ++j)
+			{
+				std::cout << deportments[i][j].getName() << std::endl;				
+			}
+		}		
 	}
+
+	
+
+	//Worker getIndex(int index)
+	//{
+	//	return deportment[index];
+	//}
 
 };
 
 int main()
 {
 	int numberCommands;
-	//std::cout << "Enter number of command: ";
-	//std::cin >> command;
 
 	numberCommands = 1;
 	++numberCommands;
 
+	Manager* personal = new Manager(numberCommands);
 
-	Manager* personal = new Manager[numberCommands];
+
+	
 
 
-	for (int i = 0; i < numberCommands; ++i)
+
+
+
+
+	/*for (int i = 0; i < numberCommands; ++i)
 	{
 		for (int j = 0; j < personal[i].getEmploys(); ++j)
 		{
 			std::cout << personal[i].getIndex(j).getName() << std::endl;
 		}
-	}
+	}*/
 
 
 
@@ -92,7 +127,23 @@ int main()
 
 
 
-	delete[] personal;
+	delete personal;
+
+	/* int a = rand();
+	std::cout << a << std::endl;
+
+	srand(time(NULL));
+	a = rand() % 10 + 5;
+	std::cout << a << std::endl;*/
+
+
+
+
+
+
+
+
+
 	/*std::vector<int> vec;
 	for (int i = 0; i < command; ++i)
 	{
