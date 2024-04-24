@@ -1,5 +1,5 @@
 #include <iostream>
-#include <vector>
+
 enum Task
 {
 	A, B, C
@@ -23,6 +23,16 @@ public:
 		employs = inEmploys;
 	}	
 
+	void setInitialFreeWorkers()
+	{
+		freeWorkers = 0;
+	}
+
+	void setFreeWorkers()
+	{
+		++freeWorkers;
+	}
+
 	std::string getName()
 	{
 		return name;
@@ -36,32 +46,12 @@ public:
 	int getFreeWorkers()
 	{
 		return freeWorkers;
-	}
-
-	void setInitialBusyWorkers()
-	{
-		isBusy = false;
-	}
-
-	void setInitialFreeWorkers()
-	{
-		freeWorkers = 0;
-	}
-
-	void setFreeWorkers()
-	{
-		++freeWorkers;
-	}
-
-	void setBusyWorkers()
-	{
-		isBusy = true;
-	}
+	}		
 
 	bool getBusyWorkers()
 	{
 		return isBusy;
-	}
+	}	
 };
 
 class Manager : public Worker
@@ -73,9 +63,7 @@ private:
 	int departmentManagerInstructions = 0;
 	
 	int* taskManger = nullptr;
-public:
-
-	
+public:	
 
 	Manager(int& inNumberCommands)
 	{						
@@ -93,8 +81,7 @@ public:
 				std::cin >> employs;
 			}
 			deportments[i] = new Worker[employs];
-			deportments[i]->setEmploys(employs);
-			
+			deportments[i]->setEmploys(employs);			
 		}
 
 		for (int i = 0; i < inNumberCommands; ++i)
@@ -112,26 +99,50 @@ public:
 				{
 					std::cout << "Enter the name of the department manager: ";
 					//std::cin >> deportments[i][j].name;
-					deportments[i][j].name = "Manager of department";					
+					deportments[i][j].name = "Manager of department";						
 				}
 				else
 				{
 					std::cout << "Enter employee name: ";
 					//std::cin >> deportments[i][j].name;
-					deportments[i][j].name = 'a' + j;
-					deportments[i][j].setInitialBusyWorkers();					
+					deportments[i][j].name = 'a' + j;					
 				}				
 			}
 		}
+		taskManger = new int[inNumberCommands];
+	}
 
-		/*for (int i = 0; i < inNumberCommands; ++i)
+	void printIsBusy(int & inNumberCommands)
+	{
+		for (int i = 0; i < inNumberCommands; ++i)
 		{
 			for (int j = 0; j < deportments[i]->getEmploys(); ++j)
 			{
-				std::cout << deportments[i][j].getName() << std::endl;
+				if (deportments[i][j].isBusy == false)
+				{
+					std::cout << "false" << std::endl;
+				}
+				else
+				{
+					std::cout << "true" << std::endl;
+				}
 			}
-		}*/
-		taskManger = new int[inNumberCommands];
+		}
+	}
+
+	void printBusyWorkers(int& inNumberCommands)
+	{
+		for (int i = 0; i < inNumberCommands; ++i)
+		{
+			for (int j = 0; j < deportments[i]->getEmploys(); ++j)
+			{
+				if (j == 0)
+				{
+					deportments[i][j].isBusy = true;
+				}
+				
+			}
+		}
 	}
 
 	void setStatementManager(int & index)
@@ -154,7 +165,7 @@ public:
 					deportments[index]->setFreeWorkers();					
 				}
 			}
-
+			std::cout << "deportments[index]->getFreeWorkers()" << deportments[index]->getFreeWorkers() << std::endl;
 			if (deportments[index]->getFreeWorkers() > 0)
 			{				
 				taskManger[index] = rand() % deportments[index]->getFreeWorkers() + 1;
@@ -163,7 +174,7 @@ public:
 				{					
 					if (deportments[index][i].isBusy == false)
 					{
-						deportments[index][i].isBusy == true;
+						deportments[index][i].isBusy = true;
 						--taskManger[index];						
 					}
 					if (taskManger[index] == 0)
@@ -175,21 +186,38 @@ public:
 		}
 	}
 
-	
-
-	
-
-	/*int getStatementProblemGeneralManager()
+	void setBusyManager(int& index)
 	{
-		return instructionsGeneralManager;
+		for (int i = 1; i < deportments[index]->getEmploys(); ++i)
+		{
+			if (deportments[index]->getFreeWorkers() == 0)
+			{
+				deportments[index][0].isBusy = true;
+			}
+		}
 	}
 
-	int getStatementProblemDepartmentManager(int& index)
+	bool getBusyGeneralManager(int& inNumberCommands)
 	{
-		return departmentManagerInstructions;
-	}*/
+		for (int i = 1; i < inNumberCommands; ++i)
+		{
+			if (deportments[i][0].isBusy == false)
+			{				
+				//return deportments[0][0].getBusyWorkers();
+				return deportments[0][0].isBusy;
+			}
+		}
+		deportments[0][0].isBusy = true;
+		//return deportments[0][0].getBusyWorkers();
+		return deportments[0][0].isBusy;
+	}
 
-	Worker* getIndex(int& index)
+	bool getBusyManager(int& index)
+	{
+		if(index > 0) return deportments[index][0].isBusy;
+	}
+	
+	/*Worker* getIndex(int& index)
 	{
 		return deportments[index];
 	}
@@ -198,7 +226,8 @@ public:
 	Worker getTestIndex(int& index1, int& index2)
 	{
 		return deportments[index1][index2];
-	}
+	}*/
+
 };
 
 int main()
@@ -210,33 +239,19 @@ int main()
 
 	Manager* company = new Manager(numberCommands);
 
-	std::cout << std::endl;
-
-	for (int i = 0; i < numberCommands; ++i)
+	while (true)
 	{
-		
-		std::cout << company->getIndex(i)->getName() << std::endl;
-		//company->setDepartmentManagerInstructions(i);
-		
+		for (int i = 0; i < numberCommands; ++i)
+		{
+			company->setStatementManager(i);
+			company->setBusyManager(i);
+		}
+
+		if (company->getBusyGeneralManager(numberCommands))
+		{
+			std::cout << "Exit" << std::endl;
+			delete company;
+			return 0;
+		}		
 	}
-	std::cout << std::endl;
-
-
-
-
-	for (int i = 0; i < numberCommands; ++i)
-	{
-		//std::cout << company->getIndex(i) << std::endl;
-		company->setStatementManager(i);
-	}
-	
-
-
-
-
-
-
-	delete company;
-
-	return 0;
 }
