@@ -12,6 +12,7 @@ public:
 	bool isBusy = false;
 	int employs = 0;
 	int freeWorkers = 0;
+	int taskWorkers;
 	
 	void setName(std::string& inName)
 	{
@@ -79,9 +80,14 @@ public:
 			{
 				std::cout << "Enter the number of employees in the department " << i << " : ";
 				std::cin >> employs;
+
+				if (employs <= 0)
+				{
+					employs = 1;
+				}
 			}
 			deportments[i] = new Worker[employs];
-			deportments[i]->setEmploys(employs);			
+			deportments[i]->setEmploys(employs);				
 		}
 
 		for (int i = 0; i < inNumberCommands; ++i)
@@ -174,6 +180,7 @@ public:
 				{					
 					if (deportments[index][i].isBusy == false)
 					{
+						deportments[index][i].taskWorkers = rand() % 3;
 						deportments[index][i].isBusy = true;
 						--taskManger[index];						
 					}
@@ -193,6 +200,28 @@ public:
 			if (deportments[index]->getFreeWorkers() == 0)
 			{
 				deportments[index][0].isBusy = true;
+			}
+		}
+	}
+
+	void printTaskWorkers(int& index)
+	{
+		for (int i = 1; i < deportments[index]->getEmploys(); ++i)
+		{
+			if (deportments[index][i].isBusy == true)
+			{
+				std::cout << "The worker " << deportments[index][i].getName() << " performs a task like : ";
+				if (deportments[index][i].taskWorkers == Task::A)
+				{
+					std::cout << "A" << std::endl;
+				}else if(deportments[index][i].taskWorkers == Task::B)
+				{
+					std::cout << "B" << std::endl;
+				}
+				else if(deportments[index][i].taskWorkers == Task::C)
+				{
+					std::cout << "C" << std::endl;
+				}
 			}
 		}
 	}
@@ -245,6 +274,11 @@ int main()
 		{
 			company->setStatementManager(i);
 			company->setBusyManager(i);
+		}
+
+		for (int i = 0; i < numberCommands; ++i)
+		{
+			company->printTaskWorkers(i);			
 		}
 
 		if (company->getBusyGeneralManager(numberCommands))
